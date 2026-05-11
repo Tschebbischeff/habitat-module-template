@@ -39,7 +39,7 @@ services:
   #     - ./habitat-config:/habitat-config/source:ro
 
   SERVICENAME:
-    image: nextcloud:fpm
+    image: alpine:latest
     container_name: ${APP_NAME_HOST}_SERVICENAME
     restart: unless-stopped
     # expose:
