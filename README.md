@@ -22,7 +22,7 @@ You can check out all officially available modules [here](https://github.com/Tsc
 
 ### Planned
 
-![TODO](https://img.shields.io/badge/TODO-Coming_Soon_(TM)-red?style=flat)
+![No Features Planned](https://img.shields.io/badge/_-No_Planned_Features-green?style=flat)
 
 ## Getting Started
 
