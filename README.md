@@ -97,6 +97,12 @@ SECRETS_DIR="/run/secrets"
 
 *This module does not require any additional environment variables.*
 
+<!--
+| Name | Description | Example | Default |
+| :-- | :-- | :-- | :-- |
+| `EXAMPLE` | An example description. | `some-value` | *Empty* |
+-->
+
 ### Secrets
 
 *This module does not require any secrets.*
@@ -109,7 +115,7 @@ SECRETS_DIR="/run/secrets"
 
 | (File) Name | Description | Documentation / How to Obtain |
 | :-- | :-- | :-- |
-|  | This module does not require any secrets |  |
+| `EXAMPLE` | An example description. | [FooBar Documentation](https://foobar.example.com/docs/how-to-generate-example-secret) |
 -->
 
 ### Run the Application
