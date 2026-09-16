@@ -1,4 +1,4 @@
-# Habitat Module Template Security Policy
+# {{ cookiecutter.project_name }} Security Policy
 
 ## Supported Versions
 

@@ -1,4 +1,4 @@
-# Code of Conduct - Habitat: Module Template
+# Code of Conduct - {{ cookiecutter.project_name }}
 
 ## Our Pledge
 
@@ -51,7 +51,7 @@ representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behaviour may be
-reported to the community leaders responsible for enforcement at <topic+code-of-conduct@habitat.tschebbischeff.dev>.
+reported to the community leaders responsible for enforcement at <{{ cookiecutter.mail_coc_enforcement }}>.
 All complaints will be reviewed and investigated promptly and fairly.
 Any leader who is the subject of a report will be recused from the investigation.
 
