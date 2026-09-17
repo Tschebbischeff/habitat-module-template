@@ -41,9 +41,6 @@ jobs:
           echo "author_email_domain=$AUTHOR_EMAIL_DOMAIN" >> $GITHUB_OUTPUT
           echo "author_email_coc=$AUTHOR_EMAIL_COC" >> $GITHUB_OUTPUT
           echo "author_email_security=$AUTHOR_EMAIL_SECURITY" >> $GITHUB_OUTPUT
-      - name: Prepare output directory
-        run: |
-          mkdir ./output
       - name: Run cookiecutter
         id: cookiecutter
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
@@ -65,11 +62,7 @@ jobs:
       - name: Inherit git history
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         run: |
-          echo "*** $(pwd)"
-          echo "*** ${{ steps.cookiecutter.outputs.outputDir }}"
-          ls -la
-          echo "*** ./output/${{ steps.vars.outputs.project_slug }}"
-          ls -la "./output/${{ steps.vars.outputs.project_slug }}"
+          sudo chown -R $(id -u):$(id -g) "./output"
           mv ./template/.git "./output/${{ steps.vars.outputs.project_slug }}/"
       - name: Commit and push generated files
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
