@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
         with:
-          path: './template'
+          path: './.template'
       - name: Compute variables
         id: vars
         run: |
@@ -34,7 +34,7 @@ jobs:
             AUTHOR_EMAIL_SECURITY="topic+security@habitat.tschebbischeff.dev"
           fi
           AUTHOR_EMAIL_DOMAIN="${AUTHOR_EMAIL#*@}"
-          echo "is_cc_template=$([ -f "./template/cookiecutter.json" ] && echo "true" || echo "false")" >> $GITHUB_OUTPUT
+          echo "is_cc_template=$([ -f "./.template/cookiecutter.json" ] && echo "true" || echo "false")" >> $GITHUB_OUTPUT
           echo "project_slug=$REPO_NAME" >> $GITHUB_OUTPUT
           echo "module_slug=$MODULE_NAME_SHORT" >> $GITHUB_OUTPUT
           echo "module_name=$MODULE_NAME_LABEL" >> $GITHUB_OUTPUT
@@ -42,11 +42,11 @@ jobs:
           echo "author_email_coc=$AUTHOR_EMAIL_COC" >> $GITHUB_OUTPUT
           echo "author_email_security=$AUTHOR_EMAIL_SECURITY" >> $GITHUB_OUTPUT
       - name: Run cookiecutter
+        id: cookiecutter
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         uses: andrewthetechie/gha-cookiecutter@v1.3.2
         with:
-          template: './template'
-          outputDir: './output'
+          template: './.template'
           cookiecutterValues: |
             {
               "module_name": "${{ steps.vars.outputs.module_name }}",
@@ -61,13 +61,14 @@ jobs:
       - name: Inherit git history
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         run: |
+          chown -R runner:runner "${{ steps.cookiecutter.outputs.outputDir }}"
           echo "*** ."
           ls -la
-          echo "*** ./template"
-          ls -la ./template
-          echo "*** ./output"
-          ls -la ./output
-          cp -r ./template/.git ./output/
+          echo "*** ./.template"
+          ls -la ./.template
+          echo "*** ./${{ steps.cookiecutter.outputs.outputDir }}"
+          ls -la "${{ steps.cookiecutter.outputs.outputDir }}"
+          cp -r ./.template/.git "${{ steps.cookiecutter.outputs.outputDir }}/"
       - name: Commit and push generated files
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v7
