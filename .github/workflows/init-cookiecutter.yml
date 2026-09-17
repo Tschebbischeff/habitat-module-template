@@ -61,6 +61,12 @@ jobs:
       - name: Inherit git history
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         run: |
+          echo "*** ."
+          ls -la
+          echo "*** ./template"
+          ls -la ./template
+          echo "*** ./output"
+          ls -la ./output
           cp -r ./template/.git ./output/
       - name: Commit and push generated files
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
