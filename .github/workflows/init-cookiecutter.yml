@@ -42,7 +42,6 @@ jobs:
           echo "author_email_coc=$AUTHOR_EMAIL_COC" >> $GITHUB_OUTPUT
           echo "author_email_security=$AUTHOR_EMAIL_SECURITY" >> $GITHUB_OUTPUT
       - name: Run cookiecutter
-        id: cookiecutter
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         uses: andrewthetechie/gha-cookiecutter@v1.3.2
         with:
@@ -63,12 +62,10 @@ jobs:
         run: |
           echo "*** $(pwd)"
           ls -la
-          echo "*** ./.template"
-          ls -la ./.template
-          echo "*** ${{ steps.cookiecutter.outputs.outputDir }}"
-          ls -la "${{ steps.cookiecutter.outputs.outputDir }}"
-          chown -R runner:runner "${{ steps.cookiecutter.outputs.outputDir }}"
-          cp -r ./.template/.git "${{ steps.cookiecutter.outputs.outputDir }}/"
+          echo "*** ./${{ steps.vars.outputs.project_slug }}"
+          ls -la "${{ steps.vars.outputs.project_slug }}"
+          chown -R runner:runner "./${{ steps.vars.outputs.project_slug }}"
+          cp -r ./.template/.git "${{ steps.vars.outputs.project_slug }}/"
       - name: Commit and push generated files
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v7
