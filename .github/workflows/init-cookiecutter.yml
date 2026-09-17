@@ -45,6 +45,7 @@ jobs:
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         uses: andrewthetechie/gha-cookiecutter@v1.3.2
         with:
+          template: '.'
           cookiecutterValues: |
             {
               "module_name": "${{ steps.vars.outputs.module_name }}",
