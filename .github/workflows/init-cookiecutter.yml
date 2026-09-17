@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
         with:
-          path: './.template'
+          path: './template'
       - name: Compute variables
         id: vars
         run: |
@@ -34,18 +34,23 @@ jobs:
             AUTHOR_EMAIL_SECURITY="topic+security@habitat.tschebbischeff.dev"
           fi
           AUTHOR_EMAIL_DOMAIN="${AUTHOR_EMAIL#*@}"
-          echo "is_cc_template=$([ -f "./.template/cookiecutter.json" ] && echo "true" || echo "false")" >> $GITHUB_OUTPUT
+          echo "is_cc_template=$([ -f "./template/cookiecutter.json" ] && echo "true" || echo "false")" >> $GITHUB_OUTPUT
           echo "project_slug=$REPO_NAME" >> $GITHUB_OUTPUT
           echo "module_slug=$MODULE_NAME_SHORT" >> $GITHUB_OUTPUT
           echo "module_name=$MODULE_NAME_LABEL" >> $GITHUB_OUTPUT
           echo "author_email_domain=$AUTHOR_EMAIL_DOMAIN" >> $GITHUB_OUTPUT
           echo "author_email_coc=$AUTHOR_EMAIL_COC" >> $GITHUB_OUTPUT
           echo "author_email_security=$AUTHOR_EMAIL_SECURITY" >> $GITHUB_OUTPUT
+      - name: Prepare output directory
+        run: |
+          mkdir ./output
       - name: Run cookiecutter
+        id: cookiecutter
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         uses: andrewthetechie/gha-cookiecutter@v1.3.2
         with:
-          template: './.template'
+          template: './template'
+          outputDir: './output'
           cookiecutterValues: |
             {
               "module_name": "${{ steps.vars.outputs.module_name }}",
@@ -61,15 +66,15 @@ jobs:
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         run: |
           echo "*** $(pwd)"
+          echo "*** ${{ steps.cookiecutter.outputs.outputDir }}"
           ls -la
-          echo "*** ./${{ steps.vars.outputs.project_slug }}"
-          ls -la "${{ steps.vars.outputs.project_slug }}"
-          chown -R runner:runner "./${{ steps.vars.outputs.project_slug }}"
-          cp -r ./.template/.git "${{ steps.vars.outputs.project_slug }}/"
+          echo "*** ./output/${{ steps.vars.outputs.project_slug }}"
+          ls -la "./output/${{ steps.vars.outputs.project_slug }}"
+          mv ./template/.git "./output/${{ steps.vars.outputs.project_slug }}/"
       - name: Commit and push generated files
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          repository: './output'
+          repository: './output/${{ steps.vars.outputs.project_slug }}'
           commit_message: 'initializes repository with cookiecutter'
           push_options: '--force'
