@@ -20,10 +20,10 @@ This project provides a cookiecutter template for generating new habitat module 
 - Generate a new module with `cookiecutter "git+ssh://git@github.com/tschebbischeff/habitat-module-template.git"` and filling out the interactive prompts.
 - Check out the resulting compose.yml file and start adding your own services and configuration
 
-<!--
 > [!TIP]
-> Alternatively you can simply use the GitHub native "Use this template" button to quickly create your module.
--->
+> Alternatively you can simply use the GitHub native "Use this template" button to quickly create your module repository. \
+> Author and E-Mail address will be inferred from your GitHub account in this case. \
+> The module name will be the title-case variant of your repository name, removing the `habitat-` prefix, if it exists.
 
 ## LLM Usage Notice
 
