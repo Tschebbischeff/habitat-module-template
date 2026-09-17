@@ -61,13 +61,13 @@ jobs:
       - name: Inherit git history
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         run: |
-          chown -R runner:runner "${{ steps.cookiecutter.outputs.outputDir }}"
-          echo "*** ."
+          echo "*** $(pwd)"
           ls -la
           echo "*** ./.template"
           ls -la ./.template
-          echo "*** ./${{ steps.cookiecutter.outputs.outputDir }}"
+          echo "*** ${{ steps.cookiecutter.outputs.outputDir }}"
           ls -la "${{ steps.cookiecutter.outputs.outputDir }}"
+          chown -R runner:runner "${{ steps.cookiecutter.outputs.outputDir }}"
           cp -r ./.template/.git "${{ steps.cookiecutter.outputs.outputDir }}/"
       - name: Commit and push generated files
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
