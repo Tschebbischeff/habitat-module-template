@@ -34,7 +34,7 @@ jobs:
             AUTHOR_EMAIL_SECURITY="topic+security@habitat.tschebbischeff.dev"
           fi
           AUTHOR_EMAIL_DOMAIN="${AUTHOR_EMAIL#*@}"
-          echo "is_cc_template=$([ -f "./template/cookiecutter.json" ] && echo "true" || echo "false")" >> $GITHUB_OUTPUT
+          echo "is_cc_template=$([ -f "./cookiecutter.json" ] && echo "true" || echo "false")" >> $GITHUB_OUTPUT
           echo "project_slug=$REPO_NAME" >> $GITHUB_OUTPUT
           echo "module_slug=$MODULE_NAME_SHORT" >> $GITHUB_OUTPUT
           echo "module_name=$MODULE_NAME_LABEL" >> $GITHUB_OUTPUT
