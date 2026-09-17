@@ -28,7 +28,7 @@ jobs:
           fi
           AUTHOR_EMAIL_COC="$AUTHOR_EMAIL"
           AUTHOR_EMAIL_SECURITY="$AUTHOR_EMAIL"
-          if [ "${{ github.actor }}" == "tschebbischeff" ]; then
+          if [ "${{ github.actor }}" == "Tschebbischeff" ]; then
             AUTHOR_EMAIL="tschebbischeff@habitat.tschebbischeff.dev"
             AUTHOR_EMAIL_COC="topic+code-of-conduct@habitat.tschebbischeff.dev"
             AUTHOR_EMAIL_SECURITY="topic+security@habitat.tschebbischeff.dev"
