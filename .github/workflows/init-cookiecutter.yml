@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
         with:
-          path: './template'
+          persist-credentials: true
       - name: Compute variables
         id: vars
         run: |
@@ -42,12 +42,9 @@ jobs:
           echo "author_email_coc=$AUTHOR_EMAIL_COC" >> $GITHUB_OUTPUT
           echo "author_email_security=$AUTHOR_EMAIL_SECURITY" >> $GITHUB_OUTPUT
       - name: Run cookiecutter
-        id: cookiecutter
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         uses: andrewthetechie/gha-cookiecutter@v1.3.2
         with:
-          template: './template'
-          outputDir: './output'
           cookiecutterValues: |
             {
               "module_name": "${{ steps.vars.outputs.module_name }}",
@@ -59,15 +56,19 @@ jobs:
               "mail_coc_enforcement": "${{ steps.vars.outputs.author_email_coc }}",
               "mail_security": "${{ steps.vars.outputs.author_email_security }}"
             }
-      - name: Inherit git history
+      - name: Finalize project structure
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         run: |
-          sudo chown -R $(id -u):$(id -g) "./output"
-          mv ./template/.git "./output/${{ steps.vars.outputs.project_slug }}/"
+          sudo chown -R $(id -u):$(id -g) "./${{ steps.vars.outputs.project_slug }}"
+          mv ./.git "./${{ steps.vars.outputs.project_slug }}/"
+          find . -mindepth 1 -maxdepth 1 ! -name "${{ steps.vars.outputs.project_slug }}" -exec rm -rf {} +
+          find "./${{ steps.vars.outputs.project_slug }}" -mindepth 1 -maxdepth 1 -exec mv {} . \;
+          rm -rf "./${{ steps.vars.outputs.project_slug }}"
+          ls -la "$(pwd)"
       - name: Commit and push generated files
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          repository: './output/${{ steps.vars.outputs.project_slug }}'
+          repository: './${{ steps.vars.outputs.project_slug }}'
           commit_message: 'initializes repository with cookiecutter'
           push_options: '--force'
