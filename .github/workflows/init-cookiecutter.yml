@@ -61,7 +61,7 @@ jobs:
       - name: Inherit git history
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         run: |
-          mv ./template/.git ./output/
+          cp -r ./template/.git ./output/
       - name: Commit and push generated files
         if: ${{ steps.vars.outputs.is_cc_template == 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v7
